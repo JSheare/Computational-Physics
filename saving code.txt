@@ -1,0 +1,48 @@
+def hook_2(t, y, function_return):
+    k = 1
+    m = 1
+    p = 2
+    function_return[0] = y[1]
+    function_return[1] = (-k*y[0]**(p-1))/m
+
+def hook_4(t, y, function_return):
+    k = 1
+    m = 1
+    p = 4
+    function_return[0] = y[1]
+    function_return[1] = (-k*y[0]**(p-1))/m
+    
+def hook_8(t, y, function_return):
+    k = 1
+    m = 1
+    p = 8
+    function_return[0] = y[1]
+    function_return[1] = (-k*y[0]**(p-1))/m
+
+
+
+
+
+func_list = [hook_2, hook_4, hook_8]
+p = 2
+for func in func_list:
+    m = 1
+    k = 1
+    initial_conditions = [1, 0]
+    ode_results = rk4_vector(0, 31, 1000, func, initial_conditions)
+    plt.plot(ode_results[0], ode_results[1], zorder=1)
+    plt.xlabel('t (sec)')
+    plt.ylabel('Position (m)')
+    plt.grid(True)
+    plt.title(f'Oscillations when p = {p}')
+    plt.show()
+    p *= 2
+    
+    max_vel = np.amax(ode_results[2])
+    kinetic_energy = 1/2 * m * max_vel**2
+    potential_energy = 1/(p) * k * initial_conditions[0]**(p)
+    print(f"The mass' maximum velocity is {max_vel}")
+    print(f"The mass' kinetic energy at its minimum position is {kinetic_energy}")
+    print(f"The mass' potential energy at its maximum position is {potential_energy}")
+    print('\n')
+    # wrong velocities?
